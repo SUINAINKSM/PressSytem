@@ -313,7 +313,7 @@ public class UserBiz {
 			}
 			return result;
 		}
-
+     
 	    public int setUserName(int uid,String username) throws SQLException{
 	    	String sql="select username from Users";
 	    	ResultSet rs=myDbhelper.executeQuery(sql);
@@ -436,5 +436,15 @@ public class UserBiz {
 	   	Object[] obj2=new Object[]{uid,rid};
 	   	myDbhelper.executeNonQuery(sql2, obj2);
 	    	
+	    }
+	    public ArrayList <String> getUserModule(String username) throws SQLException{//用户的所有模块名
+	    	ArrayList<String> arr_list=new ArrayList<String>();
+	    	 String sql="Select DISTINCT Rights.Module from Users,Rights,UsersRights where UsersRights.userID=Users.ID AND UsersRights.RightID=Rights.id AND Users.username=? ";
+	    	 Object[] obj=new Object[]{username};
+			  ResultSet rs=myDbhelper.executeQuery(sql,obj);
+			  while(rs.next()){
+				  arr_list.add(rs.getString("Module"));
+			  }
+			  return arr_list;
 	    }
 }

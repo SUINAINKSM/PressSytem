@@ -92,13 +92,13 @@ public class Login_UI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);	
 		JLabel lblNewLabel = new JLabel("New label");
-		ImageIcon img=new ImageIcon("C:\\Users\\62628\\Pictures\\Saved Pictures\\5.png");
+		ImageIcon img=new ImageIcon("C:\\Users\\62628\\Pictures\\Saved Pictures\\52.png");
 		JLabel label = new JLabel("\u51FA\u7248\u793E\u7BA1\u7406\u4FE1\u606F\u7CFB\u7EDF");
 		label.setFont(new Font("宋体", Font.BOLD, 18));
 		label.setForeground(Color.WHITE);
 		label.setBounds(79, 37, 176, 33);
 		contentPane.add(label);
-		lblNewLabel.setBounds(10, 0, 312, 85);
+		lblNewLabel.setBounds(10, 0, 318, 85);
 		lblNewLabel.setIcon(img);
 		System.out.println(Login_UI.class.getResource("").getPath());
 		System.out.println(Login_UI.class.getResource("/").getPath());
@@ -245,10 +245,7 @@ public class Login_UI extends JFrame {
 					else{//登陆失败次数累计及账户锁定
 						int a=ubz.myuser.get_faulttime();
 						 ubz.myuser=ubz.finduser(username);
-						if(date1!=null&&date1.getTime()>date2.getTime()){
-							JOptionPane.showMessageDialog(null,"您已经连续"+new ArgmentBiz().get_Num()+"次密码输入错误,账户已被加锁，请"+ubz.myuser.get_unlocktime()+"后登录","提示",JOptionPane.ERROR_MESSAGE);      //提示账户已被上锁
-						}
-						else if(ubz.myuser.get_faulttime()<new ArgmentBiz().get_Num()){
+						if(ubz.myuser.get_faulttime()<new ArgmentBiz().get_Num()){
 							a=a+1;
 							ubz.myuser.set_faulttime(a);
 							ubz.addFaulttime(username);//失败次数登记加一
@@ -258,7 +255,7 @@ public class Login_UI extends JFrame {
 							JOptionPane.showMessageDialog(null,error,"提示",JOptionPane.ERROR_MESSAGE);	
 							}
 						}
-						else{//连续五次登录失败
+						else{//连续n登录失败
 								SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 							    ubz.myuser=ubz.finduser(username);
 							    Calendar c=Calendar.getInstance();

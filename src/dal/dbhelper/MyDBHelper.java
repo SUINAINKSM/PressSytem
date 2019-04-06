@@ -35,7 +35,7 @@ public class MyDBHelper {
 
             String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"; // 数据库驱动
 
-            String url = "jdbc:sqlserver://localhost:1433;databaseName = test1";//数据库
+            String url = "jdbc:sqlserver://localhost:1433;databaseName = test4";//数据库
 
             String user = "sa"; // 用户名
 

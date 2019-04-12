@@ -86,40 +86,42 @@ public class Login_UI extends JFrame {
 		setResizable(false);
 		setTitle("[\u7528\u6237\u767B\u9646] ");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 348, 280);
+		setBounds(100, 100, 530, 387);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		getContentPane().setBackground(Color.WHITE);
 		contentPane.setLayout(null);	
 		JLabel lblNewLabel = new JLabel("New label");
 		ImageIcon img=new ImageIcon("C:\\Users\\62628\\Pictures\\Saved Pictures\\52.png");
 		JLabel label = new JLabel("\u51FA\u7248\u793E\u7BA1\u7406\u4FE1\u606F\u7CFB\u7EDF");
-		label.setFont(new Font("宋体", Font.BOLD, 18));
+		label.setFont(new Font("宋体", Font.BOLD, 24));
 		label.setForeground(Color.WHITE);
-		label.setBounds(79, 37, 176, 33);
+		label.setBounds(138, 55, 293, 45);
 		contentPane.add(label);
-		lblNewLabel.setBounds(10, 0, 318, 85);
+		lblNewLabel.setBounds(10, 0, 504, 122);
 		lblNewLabel.setIcon(img);
 		System.out.println(Login_UI.class.getResource("").getPath());
 		System.out.println(Login_UI.class.getResource("/").getPath());
 		System.out.println(Login_UI.class.getClassLoader().getResource("").getPath());
 		contentPane.add(lblNewLabel);
 		JLabel lblNewLabel_1 = new JLabel("\u7528 \u6237 \u540D");
-		lblNewLabel_1.setFont(new Font("宋体", Font.BOLD, 12));
-		lblNewLabel_1.setBounds(20, 95, 75, 19);
+		lblNewLabel_1.setFont(new Font("宋体", Font.BOLD, 17));
+		lblNewLabel_1.setBounds(95, 135, 91, 28);
 		contentPane.add(lblNewLabel_1);
 		JLabel lblNewLabel_2 = new JLabel("\u5BC6    \u7801");
-		lblNewLabel_2.setFont(new Font("宋体", Font.BOLD, 12));
-		lblNewLabel_2.setBounds(20, 124, 75, 15);
+		lblNewLabel_2.setFont(new Font("宋体", Font.BOLD, 17));
+		lblNewLabel_2.setBounds(95, 176, 91, 26);
 		contentPane.add(lblNewLabel_2);
 		
 		username_Field = new JTextField();
-		username_Field.setBounds(115, 95, 126, 21);
+		username_Field.setBounds(200, 135, 145, 28);
 		contentPane.add(username_Field);
 		username_Field.setColumns(10);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(115, 121, 126, 21);
+		passwordField.setBounds(200, 176, 145, 28);
 		contentPane.add(passwordField);
 		if(pul.GetValueByKey("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties", "isselected").equals("true")){
 			Login_UI.username_Field.setText(pul.GetValueByKey("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties","username"));
@@ -128,9 +130,10 @@ public class Login_UI extends JFrame {
 			chckbxNewCheckBox.setSelected(true);
 		}	
 		Label label_1 = new Label("\u5DE5\u4F5C\u65E5\u671F");
-		label_1.setFont(new Font("微软雅黑", Font.BOLD, 12));
-		label_1.setBounds(20, 151, 75, 23);
+		label_1.setFont(new Font("宋体", Font.BOLD, 17));
+		label_1.setBounds(95, 219, 91, 28);
 		contentPane.add(label_1);
+		chckbxNewCheckBox.setBackground(Color.WHITE);
 		
 	    
 		chckbxNewCheckBox.addItemListener(new ItemListener() {
@@ -168,9 +171,9 @@ public class Login_UI extends JFrame {
 				}
 			}
 		});
-		chckbxNewCheckBox.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		chckbxNewCheckBox.setFont(new Font("微软雅黑", Font.PLAIN, 17));
 		chckbxNewCheckBox.setForeground(Color.RED);
-		chckbxNewCheckBox.setBounds(115, 182, 91, 23);
+		chckbxNewCheckBox.setBounds(183, 267, 109, 31);
 		contentPane.add(chckbxNewCheckBox);
 		
 		JButton btnNewButton = new JButton("\u786E\u8BA4");
@@ -186,6 +189,10 @@ public class Login_UI extends JFrame {
 				System.out.println(password1);
 				//System.out.println(password);
 				try {
+					if(ubz.finduser(username)==null){//用户不存在
+						JOptionPane.showMessageDialog(null,"该账户不存在!","提示",JOptionPane.INFORMATION_MESSAGE);
+						return;
+					}
 					if(ubz.User_LoginCheck(username, password1)==1){//用户名密码正确
 						//获得当前用户的解锁时间，把string转换为Date型
 						SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -219,7 +226,9 @@ public class Login_UI extends JFrame {
 								     else{//未选择记住密码
 								    	 //update("isselected","false");
 								    	 try {
-											pul.WriteProperties("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties", "isselected", "false");
+								    		 pul.WriteProperties("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties", "username", Login_UI.username_Field.getText().toString());
+										     pul.WriteProperties("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties", "password", String.valueOf(passwordField.getPassword()));
+											 pul.WriteProperties("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties", "isselected", "false");
 										} catch (IOException e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
@@ -245,10 +254,11 @@ public class Login_UI extends JFrame {
 					else{//登陆失败次数累计及账户锁定
 						int a=ubz.myuser.get_faulttime();
 						 ubz.myuser=ubz.finduser(username);
-						if(ubz.myuser.get_faulttime()<new ArgmentBiz().get_Num()){
 							a=a+1;
 							ubz.myuser.set_faulttime(a);
 							ubz.addFaulttime(username);//失败次数登记加一
+						if(ubz.myuser.get_faulttime()<new ArgmentBiz().get_Num()){
+						
 							String error;
 							if(ubz.myuser.get_faulttime()<=(new ArgmentBiz().get_Num()-1)){
 								error="密码或账号错误，你还有"+(new ArgmentBiz().get_Num()-ubz.myuser.get_faulttime())+"次机会!";
@@ -296,8 +306,8 @@ public class Login_UI extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setFont(new Font("微软雅黑", Font.PLAIN, 12));
-		btnNewButton.setBounds(51, 208, 59, 23);
+		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 20));
+		btnNewButton.setBounds(57, 307, 91, 31);
 		contentPane.add(btnNewButton);
 		JButton button = new JButton("\u53D6\u6D88");
 		button.addActionListener(new ActionListener() {
@@ -305,8 +315,8 @@ public class Login_UI extends JFrame {
 				dispose();
 			}
 		});
-		button.setFont(new Font("微软雅黑", Font.PLAIN, 12));
-		button.setBounds(196, 208, 59, 23);
+		button.setFont(new Font("宋体", Font.PLAIN, 20));
+		button.setBounds(315, 307, 91, 31);
 		contentPane.add(button);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -322,9 +332,28 @@ public class Login_UI extends JFrame {
 				calendar.add(Calendar.DATE,-i);
 				timeList.add(sdf.format(calendar.getTime()));
 			}
+			comboBox.setBackground(Color.WHITE);
 			comboBox.setModel(new DefaultComboBoxModel(timeList.toArray()));   //初始化日期
-			comboBox.setBounds(112, 152, 129, 22);
+			comboBox.setBounds(200, 217, 145, 29);
 			contentPane.add(comboBox);
+			//this.setBackground(Color.gray);
+			JLabel lblNewLabel_3 = new JLabel();
+			ImageIcon img3=new ImageIcon("username.png");
+			lblNewLabel_3.setIcon(img3);
+			lblNewLabel_3.setBounds(57, 135, 30, 31);
+			contentPane.add(lblNewLabel_3);
+			
+			JLabel label_2 = new JLabel();
+			label_2.setBounds(57, 176, 30, 31);
+			ImageIcon img4=new ImageIcon("password.png");
+			label_2.setIcon(img4);
+			contentPane.add(label_2);
+			
+			JLabel label_3 = new JLabel();
+			ImageIcon img5=new ImageIcon("date.png");
+			label_3.setIcon(img5);
+			label_3.setBounds(57, 216, 30, 31);
+			contentPane.add(label_3);
 			this.setLocationRelativeTo(null);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

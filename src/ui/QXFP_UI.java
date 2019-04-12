@@ -11,55 +11,68 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import bll.UserBiz;
+import util.PropertiesFileUtils;
 
 import java.awt.Font;
 
-public class QXGL_UI extends JFrame{
+public class QXFP_UI extends JFrame{
 
 	private JPanel contentPane;
-	private static JTextField textField=new JTextField();
-	private static JTextField textField_1=new JTextField();
+	private JTextField textField=new JTextField();
+	private JTextField textField_1=new JTextField();
 	public static int usernumber;//保存用户的数目
 	public static int uid;//当前用户的ID
 	public static String[] columnNames1 = {"功能模块","已分配基本权限"};	
-    public static UserBiz ubz=new UserBiz();
-    public static JButton button = new JButton("\u5220\u9664");
+    public UserBiz ubz=new UserBiz();
+    public JButton button = new JButton("\u5220\u9664");
     public static JLabel lblNewLabel = new JLabel("\u6CE8\u518C");
-    public static DefaultListModel<String> model=new DefaultListModel<>();
-    public static JList<String> list;
+    public DefaultListModel<String> model=new DefaultListModel<>();
+    public JList<String> list;
+    public static PropertiesFileUtils pul=new PropertiesFileUtils();
+    //public FriListModel buddy=new FriListModel<>();
     public static String[] columnNames2 = {"功能模块","未分配的权限"};
     public static JLabel lblNewLabel_5 = new JLabel("已分项：0");
     private static JTable table;
     private static JTable table_1;
-    public static Object[][] arranged_obj;
-    public static Object[][] unarranged_obj;
+    public  Object[][] arranged_obj;
+    public  Object[][] unarranged_obj;
 	public static JLabel lblNewLabel_4 = new JLabel("未分项：0");
-	public static JButton button_4 = new JButton("<=");
-	public static JButton btnNewButton = new JButton("=>");
+	public JButton button_4 = new JButton("<=");
+	public JButton btnNewButton = new JButton("=>");
 	public Object[][] queryUnallocatedData(int id){
     	List<HashMap<String,String>> result=ubz.UnallocatedByUserID(id);
         unarranged_obj=new Object[result.size()][columnNames2.length];
@@ -91,7 +104,61 @@ public class QXGL_UI extends JFrame{
         }
         return arranged_obj;
     }
-
+public class FriListModel extends  AbstractListModel {
+		
+		ArrayList<String> uArray;//好友类表；
+	        
+		public FriListModel(ArrayList<String> uArray){
+			 this.uArray=uArray;		
+		}
+		@Override
+		public int getSize() {  
+			return uArray.size();
+		}
+		@Override
+		public Object getElementAt(int index) {
+			return   uArray.get(index) ;
+		}
+	}
+@SuppressWarnings({ "rawtypes", "serial" })
+public class FriListCellRenderer  extends JLabel implements ListCellRenderer {
+	@Override
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			boolean cellHasFocus) {
+		
+		  if(isSelected){
+			 // setBackground(Color.YELLOW);
+			  setForeground(Color.BLUE);
+		  }
+		  else{
+			  setBackground(list.getBackground());
+			  setForeground(list.getForeground());
+		  }
+		  
+	   String user=(String)value;//把数据转换为user对象，  在AbstractListModel	中传过来的是一个user对象；
+	   /*******设置JLable的文字******/ 
+       String text=user;
+	   setText(text);//设置JLable的文字
+	   /*******设置JLable的图片*****/
+	   // 得到此图标的 Image,然后创建此图像的缩放版本。
+	   ImageIcon img=new ImageIcon(getClass().getClassLoader().getResource("user.png")); 	
+       setIcon(img);//设置JLable的图片
+       setIconTextGap(20);//设置JLable的图片与文字之间的距离
+       Border border = null;
+       if (cellHasFocus) {
+           if (isSelected) {
+               border = UIManager.getBorder("List.focusSelectedCellHighlightBorder");
+           }
+           if (border == null) {
+               border = UIManager.getBorder("List.focusCellHighlightBorder");
+           }
+       } else {
+          // border = getNoFocusBorder();
+       }
+setBorder(border);	
+       return this;
+	}	
+}
 	/**
 	 * Launch the application.
 	 */
@@ -99,7 +166,7 @@ public class QXGL_UI extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					QXGL_UI frame = new QXGL_UI();
+					QXFP_UI frame = new QXFP_UI();
 					new Thread().start();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -110,11 +177,11 @@ public class QXGL_UI extends JFrame{
 	/**
 	 * Create the frame.
 	 */
-	public QXGL_UI() {
+	public QXFP_UI() {
 		setResizable(false);
 		
 		setTitle("\u3010\u7528\u6237\u6CE8\u518C\u53CA\u6743\u9650\u7BA1\u7406\u3011");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);//设置为点击右上角只关闭当前界面
 		setBounds(100, 100, 693, 483);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -123,17 +190,17 @@ public class QXGL_UI extends JFrame{
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(14, 13, 90, 397);
+		panel.setBounds(14, 13, 112, 397);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		JLabel label = new JLabel("\u7528\u6237\u4E00\u89C8\u8868");
-		label.setBounds(7, 0, 75, 18);
+		label.setBounds(27, 3, 75, 18);
 		label.setForeground(new Color(178, 34, 34));
 		panel.add(label);
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(7, 31, 75, 336);
+		scrollPane.setBounds(7, 31, 95, 336);
 		panel.add(scrollPane);
 		
 		
@@ -148,7 +215,32 @@ public class QXGL_UI extends JFrame{
 		for(String a:arr_list){
 			model.addElement(a);
 		}
-		list = new JList(model){
+		 FriListModel buddy = new FriListModel(arr_list);
+		 JList list = new JList(buddy){
+			 @Override
+
+	            public int locationToIndex(Point location) {
+
+	                int index = super.locationToIndex(location);
+
+	                if (index != -1 && !getCellBounds(index, index).contains(location)) {
+
+	                    return -1;
+
+	                }
+
+	                else {
+
+	                    return index;
+
+	                }
+
+	            }
+		 };
+		 list.setCellRenderer(new FriListCellRenderer());
+		 list.setFont(new Font(Font.SERIF, Font.PLAIN, 18));
+		 //list.setPreferredSize(new Dimension(360, 350));
+		/*list = new JList(model){
 			@Override
 
             public int locationToIndex(Point location) {
@@ -169,6 +261,7 @@ public class QXGL_UI extends JFrame{
 
             }
 		};
+		*/
 		list.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e)
 			{
@@ -178,9 +271,11 @@ public class QXGL_UI extends JFrame{
 				lblNewLabel.setText("修改");
 				button.setEnabled(true);
 				
-				String username=list.getSelectedValue();
+				Object username=list.getSelectedValue();
 				try {
-					uid=ubz.getUserID(username);
+					if(username==null)
+						return;
+					uid=ubz.getUserID(username.toString());
 				} catch (SQLException e3) {
 					// TODO Auto-generated catch block
 					e3.printStackTrace();
@@ -188,10 +283,10 @@ public class QXGL_UI extends JFrame{
 				try {
 					//ubz.showUserRights(username);
 					//ubz.showUserUNRights(username);
-					lblNewLabel_5.setText("已分项:"+ubz.showUserRightsNumber(username));
-					lblNewLabel_4.setText("未分项:"+ubz.showUserUNRightsNumber(username));;
-					QXGL_UI.unarranged_obj=queryUnallocatedData(uid);
-					QXGL_UI.arranged_obj=queryAllocatedData(uid);
+					lblNewLabel_5.setText("已分项:"+ubz.showUserRightsNumber(username.toString()));
+					lblNewLabel_4.setText("未分项:"+ubz.showUserUNRightsNumber(username.toString()));;
+					unarranged_obj=queryUnallocatedData(uid);
+					arranged_obj=queryAllocatedData(uid);
 					table.setModel(new DefaultTableModel(unarranged_obj,columnNames2));
 					table_1.setModel(new DefaultTableModel(arranged_obj,columnNames1));
 					table.setVisible(true);
@@ -206,8 +301,8 @@ public class QXGL_UI extends JFrame{
 				}
 				System.out.println(username);
 				try {
-					textField.setText(username);
-					textField_1.setText(ubz.getUserpassword(username));
+					textField.setText(username.toString());
+					textField_1.setText(ubz.getUserpassword(username.toString()));
 					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -255,7 +350,7 @@ public class QXGL_UI extends JFrame{
 		JLabel lblNewLabel_3 = new JLabel();
 		lblNewLabel_3.setText("共"+usernumber+"人");
 		lblNewLabel_3.setForeground(new Color(178, 34, 34));
-		lblNewLabel_3.setBounds(19, 379, 52, 18);
+		lblNewLabel_3.setBounds(30, 377, 52, 18);
 		panel.add(lblNewLabel_3);
 		
 		textField.setBounds(88, 20, 136, 18);
@@ -357,6 +452,19 @@ public class QXGL_UI extends JFrame{
 							e1.printStackTrace();
 						}
 						ubz.updateUserPassword(textField.getText().toString(), textField_1.getText().toString());
+						 try {
+							pul.WriteProperties("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties", "username", textField.getText().toString());
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					     try {
+							pul.WriteProperties("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties", "password", textField_1.getText().toString());
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						 //pul.WriteProperties("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties", "isselected", "false");
 					
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
@@ -604,8 +712,8 @@ public class QXGL_UI extends JFrame{
 					}
 					lblNewLabel_4.setText("未分项:"+ubz.showUserUNRightsNumber(textField.getText().toString()));
 					lblNewLabel_5.setText("已分项:"+ubz.showUserRightsNumber(textField.getText().toString()));
-					QXGL_UI.unarranged_obj=queryUnallocatedData(uid);
-					QXGL_UI.arranged_obj=queryAllocatedData(uid);
+					unarranged_obj=queryUnallocatedData(uid);
+					arranged_obj=queryAllocatedData(uid);
 					table.setModel(new DefaultTableModel(unarranged_obj,columnNames2));
 					table_1.setModel(new DefaultTableModel(arranged_obj,columnNames1));
 					//ubz.showUserRights(textField.getText().toString());
@@ -652,8 +760,8 @@ public class QXGL_UI extends JFrame{
 					lblNewLabel_5.setText("已分项:"+ubz.showUserRightsNumber(textField.getText().toString()));
 					/*ubz.showUserRights(textField.getText().toString());
 					ubz.showUserUNRights(textField.getText().toString());*/
-					QXGL_UI.unarranged_obj=queryUnallocatedData(uid);
-					QXGL_UI.arranged_obj=queryAllocatedData(uid);
+					unarranged_obj=queryUnallocatedData(uid);
+					arranged_obj=queryAllocatedData(uid);
 					table.setModel(new DefaultTableModel(unarranged_obj,columnNames2));
 					table_1.setModel(new DefaultTableModel(arranged_obj,columnNames1));
 					 table.repaint();
@@ -690,6 +798,9 @@ public class QXGL_UI extends JFrame{
 	                return false;
 	            }
 		};
+		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();// 设置table内容居中
+		tcr.setHorizontalAlignment(SwingConstants.CENTER);// 这句和上句作用一样
+		table.setDefaultRenderer(Object.class, tcr);
 		table.setModel(new DefaultTableModel(unarranged_obj, columnNames2));
 		//table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.addMouseListener(new MouseAdapter() {
@@ -719,6 +830,7 @@ public class QXGL_UI extends JFrame{
 	                return false;
 	            }
 		};
+		table_1.setDefaultRenderer(Object.class, tcr);
 		table_1.setModel(new DefaultTableModel(arranged_obj, columnNames1));
 		table_1.addMouseListener(new MouseAdapter() {
 			@Override

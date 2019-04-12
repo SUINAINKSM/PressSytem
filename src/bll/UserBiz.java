@@ -345,8 +345,8 @@ public class UserBiz {
 	    				e.printStackTrace();
 	    			}
 	    	    }
-	    		String  sql1="Insert into Users Values(?,?)";
-	    		Object[] obj=new Object[]{username,password};
+	    		String  sql1="Insert  Users(username,Password,fault_time) Values(?,?,?)";
+	    		Object[] obj=new Object[]{username,password,0};
 	    		myDbhelper.executeNonQuery(sql1, obj);
 	    		return 1;
 	    	
@@ -446,5 +446,15 @@ public class UserBiz {
 				  arr_list.add(rs.getString("Module"));
 			  }
 			  return arr_list;
+	    }
+	    public String getRightWindowName(String rightname) throws SQLException{
+	    	String sql="SELECT W_name from Rights WHERE rightName=?";
+	    	Object[] obj=new Object[]{rightname};
+	    	ResultSet rs=myDbhelper.executeQuery(sql,obj);
+	    	String w_name = null;
+	    	while(rs.next()){
+				  w_name=rs.getString("W_name");
+			  }
+	    	return w_name;
 	    }
 }

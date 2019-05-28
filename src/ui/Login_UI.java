@@ -58,6 +58,7 @@ import java.awt.event.ItemEvent;
 public class Login_UI extends JFrame {
 
 	private JPanel contentPane;
+	private Label label_1;
 	public static JTextField username_Field;
 	public static  JPasswordField passwordField;
     static private UserBiz ubz=new UserBiz();
@@ -129,7 +130,7 @@ public class Login_UI extends JFrame {
 			System.out.println(pul.GetValueByKey("C:/Users/62628/WORKSPACE/Press_System/bin/test.properties","password"));
 			chckbxNewCheckBox.setSelected(true);
 		}	
-		Label label_1 = new Label("\u5DE5\u4F5C\u65E5\u671F");
+		label_1 = new Label("\u5DE5\u4F5C\u65E5\u671F");
 		label_1.setFont(new Font("ËÎÌו", Font.BOLD, 17));
 		label_1.setBounds(95, 219, 91, 28);
 		contentPane.add(label_1);

@@ -22,28 +22,29 @@ public class UserBiz {
 	  public String showUsernameOntop(){
 		  return myuser.get_username();
 	  }
-	  public int User_LoginCheck(String username,String password ) throws SQLException{//用户登录函数
-		  String Sql = "select * from Users Where username=?";
-		  Object[] paratemers=new Object[]{username};//数据传入
-		  ResultSet rs=MyDBHelper.executeQuery(Sql, paratemers);
-		  while(rs.next()){
-			  String a=rs.getString("username");
-			  String b=rs.getString("Password");
-			  int c=Integer.valueOf(rs.getString("fault_time"));
-			  String d=rs.getString("unlock_time");
-			  System.out.println(d);
-			  if(username.equals(a)&&password.equals(b)){
-				 myuser.set_username(username);
-				 myuser.set_password(b);
-				 myuser.set_faulttime(c);
-				 myuser.set_unlocktime(d);
-				  return 1;
-					 }
-		  }
-		
-		  return 0;
-		  
-	  }
+
+	public int User_LoginCheck(String username, String password) throws SQLException {// 用户登录函数
+		String Sql = "select * from Users Where username=?";
+		Object[] paratemers = new Object[] { username };// 数据传入
+		ResultSet rs = MyDBHelper.executeQuery(Sql, paratemers);
+		while (rs.next()) {
+			String a = rs.getString("username");
+			String b = rs.getString("Password");
+			int c = Integer.valueOf(rs.getString("fault_time"));
+			String d = rs.getString("unlock_time");
+			System.out.println(d);
+			if (username.equals(a) && password.equals(b)) {
+				myuser.set_username(username);
+				myuser.set_password(b);
+				myuser.set_faulttime(c);
+				myuser.set_unlocktime(d);
+				return 1;
+			}
+		}
+
+		return 0;
+
+	}
 	  public String Get_Currenttime(){
 		  Calendar c = Calendar.getInstance();//可以对每个时间域单独修改   
 			int year = c.get(Calendar.YEAR);

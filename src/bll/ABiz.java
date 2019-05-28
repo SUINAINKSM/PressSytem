@@ -11,7 +11,7 @@ public class ABiz {
 	 public Object[][] getBjsnameList() throws SQLException{
 		 ArrayList<String> arr_list=new ArrayList<String>();
 		
-	     String sql1="Select * from A";
+	     String sql1="Select * from A ORDER BY bjsName";
 	     ResultSet rs1=myDbhelper.executeQuery(sql1);	  
 		 int i=0;
 		 while(rs1.next())

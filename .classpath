@@ -5,5 +5,12 @@
 	<classpathentry kind="lib" path="jgoodies-common-1.8.0.jar" sourcepath="jgoodies-common-1.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="E:/JDBC/Microsoft JDBC Driver 6.0 for SQL Server/sqljdbc_6.0/chs/jre8/sqljdbc42.jar"/>
+	<classpathentry kind="lib" path="E:/大三下/数据库技术与应用/beautyeye-master/beautyeye-master/dist/beautyeye_lnf.jar"/>
+	<classpathentry kind="lib" path="C:/Users/62628/WORKSPACE/Press_System/mysql-connector-java-5.1.39-bin.jar"/>
+	<classpathentry kind="lib" path="E:/大三下/数据库技术与应用/实验八/itext-asian.jar"/>
+	<classpathentry kind="lib" path="E:/大三下/数据库技术与应用/实验八/itextpdf-5.5.8.jar"/>
+	<classpathentry kind="lib" path="E:/大三下/数据库技术与应用/实验八/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="E:/大三下/数据库技术与应用/实验八/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="E:/大三下/数据库技术与应用/实验八/jxl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

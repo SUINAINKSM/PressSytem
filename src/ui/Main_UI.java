@@ -3,6 +3,7 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -116,8 +117,18 @@ public class Main_UI extends JFrame {
 						        	new PDRK_UI();break;
 						        case "W_qxfp":
 						        	new QXFP_UI();break;
+						        case "W_zhss":
+						        	new CombineQuery_UI();break;
+						        case "W_mhss":
+						        	new FuzzyQuery_UI();break;
+						        case "W_wnss":
+						        	new OperatorQuery_UI();break;
+						        case "W_tskc":
+						        	new BB1_UI();break;
+						        case "W_tsrk":
+						        	new BB2_UI();break;
 						        }
-						} catch (SQLException e) {
+						} catch (SQLException | ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
